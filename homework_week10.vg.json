@@ -1,0 +1,93 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 1000,
+  "height": 800,
+  "title": "120 Years of Summer Olympics",
+  "data": {
+    "url": "data/athlete_events.csv"
+  },
+  "transform": [
+    {
+      "filter": {
+        "field": "NOC",
+        "oneOf": [
+          "CHN",
+          "GBR",
+          "JPN",
+          "RUS",
+          "USA"
+        ]
+      }
+    },
+    {
+      "filter": "datum.Season == 'Summer'"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": true
+      },
+      "params": [
+        {
+          "name": "industry",
+          "select": {
+            "type": "point",
+            "fields": [
+              "NOC"
+            ]
+          },
+          "bind": "legend"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "axis": {
+            "title": "Number of Athletes"
+          }
+        },
+        "x": {
+          "timeUnit": "year",
+          "field": "Year",
+          "type": "temporal",
+          "axis": {
+            "title": "Year"
+          }
+        },
+        "color": {
+          "field": "NOC",
+          "scale": {
+            "scheme": "category20b"
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "industry",
+            "value": 1
+          },
+          "value": 0.2
+        },
+        "tooltip": [
+          {
+            "field": "Year",
+            "timeUnit": "year",
+            "type": "temporal",
+            "title": "Year"
+          },
+          {
+            "aggregate": "count",
+            "type": "quantitative",
+            "title": "Number of Athletes"
+          },
+          {
+            "field": "NOC",
+            "title": "Country"
+          }
+        ]
+      }
+    }    
+  ]
+}
